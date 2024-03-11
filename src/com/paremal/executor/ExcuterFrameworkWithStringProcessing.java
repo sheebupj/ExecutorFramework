@@ -23,7 +23,7 @@ public class ExcuterFrameworkWithStringProcessing {
 				"The Callable object returns Future object that provides methods to monitor the progress of a task executed by a thread &&&&&&&&&&",
 				"An object of the Future used to check the status of a Callable interface and retrieves the result from Callable once the thread has done &&&&&&&&&&"};
 		List<Future<Map<String,Integer>>> lftr= new ArrayList<>();
-		ExecutorService executor= Executors.newFixedThreadPool(5);
+		ExecutorService executor= Executors.newSingleThreadExecutor();
 		for(String w:words1) {
 			Callable<Map<String,Integer>> cl=()-> Arrays.stream(w.split(" ")).collect(Collectors.toMap(Function.identity(),v->1,Integer::sum));
 			lftr.add(executor.submit(cl));
@@ -36,6 +36,10 @@ public class ExcuterFrameworkWithStringProcessing {
 				e.printStackTrace();
 			}
 		});
+		
+		ExecutorService executor1= Executors.newSingleThreadExecutor();
+		Runnable runnable=()->System.out.println("hello world");
+		executor1.submit(runnable);
 		
 	}
 
