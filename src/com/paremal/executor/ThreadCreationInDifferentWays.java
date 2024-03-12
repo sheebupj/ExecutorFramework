@@ -12,9 +12,11 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.Map;
 
-public class ExcuterFrameworkWithStringProcessing {
+public class ThreadCreationInDifferentWays {
+	
+	
 	/*
-	 * String processing in Excecutor framework using callable and future and Map sorting usingKey
+	 * Thread creation using Executor framework, Runnable, Callable, Future, extending threads etc
 	 */
 	public static void main(String[] args) {
 		String[] words1={"Hi Hello Welcome to Infosys Hi Welcome Again Hi &&&&&&&&&&",
@@ -25,7 +27,7 @@ public class ExcuterFrameworkWithStringProcessing {
 		
 		
 		/*
-		 * create map of word count for each sentence in different threads using executor framework with Callable and future
+		 * String processing in Excecutor framework using callable and future and Map sorting usingKey
 		 */
 		List<Future<Map<String,Integer>>> lftr= new ArrayList<>();
 		ExecutorService executor= Executors.newSingleThreadExecutor();
