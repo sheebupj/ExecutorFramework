@@ -54,8 +54,8 @@ public class ThreadCreationInDifferentWays {
 		/*
 		 * Thread creation using Thread class and runnable
 		 */
-		Runnable thread= ()->System.out.println("hello world1");
-		Thread t1= new Thread(thread);
+		Runnable rnbl= ()->System.out.println("hello world1");
+		Thread t1= new Thread(rnbl);
 		t1.start();
 		
 		/*
@@ -63,6 +63,8 @@ public class ThreadCreationInDifferentWays {
 		 */
 		Runnable thread1= ()->System.out.println("hello world2");
 		Executors.newCachedThreadPool().submit(thread1);
+		
+		Executors.newSingleThreadExecutor().submit(()->System.out.println("Hello World 2.1"));
 		
 		
 		/*
