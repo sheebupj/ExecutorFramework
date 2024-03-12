@@ -22,6 +22,11 @@ public class ExcuterFrameworkWithStringProcessing {
 				"An object of Callable returns a computed result done by a thread in contrast to a Runnable interface that can only run the thread &&&&&&&&&&",
 				"The Callable object returns Future object that provides methods to monitor the progress of a task executed by a thread &&&&&&&&&&",
 				"An object of the Future used to check the status of a Callable interface and retrieves the result from Callable once the thread has done &&&&&&&&&&"};
+		
+		
+		/*
+		 * create map of word count for each sentence in different threads using executor framework with Callable and future
+		 */
 		List<Future<Map<String,Integer>>> lftr= new ArrayList<>();
 		ExecutorService executor= Executors.newSingleThreadExecutor();
 		for(String w:words1) {
@@ -37,9 +42,37 @@ public class ExcuterFrameworkWithStringProcessing {
 			}
 		});
 		
+		/*
+		 * Thread creation using executor and runnable
+		 */
 		ExecutorService executor1= Executors.newSingleThreadExecutor();
 		Runnable runnable=()->System.out.println("hello world");
 		executor1.submit(runnable);
+		
+		/*
+		 * Thread creation using Thread class and runnable
+		 */
+		Runnable thread= ()->System.out.println("hello world1");
+		Thread t1= new Thread(thread);
+		t1.start();
+		
+		/*
+		 * Thread creation using Thread class and runnable
+		 */
+		Runnable thread1= ()->System.out.println("hello world2");
+		Executors.newCachedThreadPool().submit(thread1);
+		
+		
+		/*
+		 * Thread creation extending thread class
+		 */
+		Thread t2= new Thread() {
+			public void run(){
+				System.out.println("hello world3"); 
+				
+			}
+		};
+		t2.start();
 		
 	}
 
