@@ -76,6 +76,9 @@ public class ThreadCreationInDifferentWays {
 		};
 		t2.start();
 		
+		
+		
+		
 	}
 
 }
