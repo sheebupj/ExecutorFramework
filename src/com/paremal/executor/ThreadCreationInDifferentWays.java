@@ -101,7 +101,7 @@ public class ThreadCreationInDifferentWays {
 		ThreadCreationInDifferentWays creationInDifferentWays = new ThreadCreationInDifferentWays();
 		
 		/*
-		 *CompletableFuture.runAsync  method call
+		 *CompletableFuture.runAsync 
 		 */
 		 creationInDifferentWays.processFileRunAsync(words);
 		 
@@ -129,20 +129,29 @@ public class ThreadCreationInDifferentWays {
 
 	}
 
+	/**
+	 * runAsync
+	 * @param words
+	 */
 	void processFileRunAsync(List<String> words) {
 		System.out.println(
-				"process words++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-		CompletableFuture<Void> runAsyncFuture = CompletableFuture
+				"process words++++++++++++++++++++++++++++++runAsync++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+		 CompletableFuture
 				.runAsync(() -> words.stream().collect(Collectors.toMap(Function.identity(), v -> 1, Integer::sum))
 						.entrySet().stream().sorted(Map.Entry.comparingByValue()).forEach(System.out::println));
 	}
-
+	/**
+	 * supplyAsync
+	 * @param words
+	 * @return
+	 */
 	CompletableFuture<Map<String, Integer>> processFileSupplyAsync(List<String> words) {
-		System.out.println("process words++++++++++++++++++++++++++++++++");
-		// CompletableFuture<Map<String,Integer>>cfsa=
+		System.out.println("process words++++++++++++++supplyAsync++++++++++++++++++");
+		
 		return CompletableFuture
 				.supplyAsync(() -> words.stream().collect(Collectors.toMap(Function.identity(), v -> 1, Integer::sum)));
-		// return cfsa;
+
+
 	}
 
 }
