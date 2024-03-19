@@ -99,8 +99,16 @@ public class ThreadCreationInDifferentWays {
 			e.printStackTrace();
 		}
 		ThreadCreationInDifferentWays creationInDifferentWays = new ThreadCreationInDifferentWays();
-
-		// creationInDifferentWays.processFileRunAsync(words);
+		
+		/*
+		 *CompletableFuture.runAsync  method call
+		 */
+		 creationInDifferentWays.processFileRunAsync(words);
+		 
+		 /*
+		  * CompletableFuture
+				.supplyAsync method call
+		  */
 		CompletableFuture<Map<String, Integer>> cfsa = creationInDifferentWays.processFileSupplyAsync(words);
 		while (!cfsa.isDone()) {
 			System.out.println("working");
