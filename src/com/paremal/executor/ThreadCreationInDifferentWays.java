@@ -1,6 +1,8 @@
 package com.paremal.executor;
 
-import static org.junit.Assert.assertEquals;
+
+
+import org.w3c.dom.ls.LSOutput;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -19,6 +21,7 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.Map;
+import java.util.SortedMap;
 
 public class ThreadCreationInDifferentWays {
 
@@ -58,7 +61,7 @@ public class ThreadCreationInDifferentWays {
 		 * Thread creation using executor and runnable
 		 */
 		ExecutorService executor1 = Executors.newSingleThreadExecutor();
-		Runnable runnable = () -> System.out.println("hello world");
+		Runnable runnable = () -> System.out.println("########################hello world");
 		executor1.submit(runnable);
 
 		/*
@@ -86,6 +89,8 @@ public class ThreadCreationInDifferentWays {
 			}
 		};
 		t2.start();
+		System.out.println("Hello from   "+Thread.currentThread().getName());
+		new Thread(()->System.out.println("Hello World from "+Thread.currentThread().getName())).start();
 		/*
 		 * Reading the data.txt file and split each lines to words and build a words
 		 * list
@@ -99,17 +104,16 @@ public class ThreadCreationInDifferentWays {
 			e.printStackTrace();
 		}
 		ThreadCreationInDifferentWays creationInDifferentWays = new ThreadCreationInDifferentWays();
-		
+
 		/*
-		 *CompletableFuture.runAsync 
+		 * CompletableFuture.runAsync
 		 */
-		 creationInDifferentWays.processFileRunAsync(words);
-		 
-		 /*
-		  * CompletableFuture
-				.supplyAsync method call
-		  */
-		CompletableFuture<Map<String, Integer>> cfsa = creationInDifferentWays.processFileSupplyAsync(words);
+		// creationInDifferentWays.processFileRunAsync(words);
+
+		/*
+		 * CompletableFuture .supplyAsync method call
+		 */
+		CompletableFuture<Object> cfsa = creationInDifferentWays.processFileSupplyAsync(words);
 		while (!cfsa.isDone()) {
 			System.out.println("working");
 			try {
@@ -121,7 +125,9 @@ public class ThreadCreationInDifferentWays {
 		}
 
 		try {
-			cfsa.get().entrySet().stream().sorted(Map.Entry.comparingByValue()).forEach(System.out::println);
+			System.out.println(cfsa.get().getClass().descriptorString());
+			Map<String, Integer> map = (Map<String, Integer>) cfsa.get();
+			map.entrySet().stream().forEach(System.out::println);
 		} catch (InterruptedException | ExecutionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -131,25 +137,32 @@ public class ThreadCreationInDifferentWays {
 
 	/**
 	 * runAsync
+	 * 
 	 * @param words
 	 */
 	void processFileRunAsync(List<String> words) {
 		System.out.println(
 				"process words++++++++++++++++++++++++++++++runAsync++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-		 CompletableFuture
+		CompletableFuture
 				.runAsync(() -> words.stream().collect(Collectors.toMap(Function.identity(), v -> 1, Integer::sum))
 						.entrySet().stream().sorted(Map.Entry.comparingByValue()).forEach(System.out::println));
 	}
+
 	/**
 	 * supplyAsync
 	 * @param words
 	 * @return
 	 */
-	CompletableFuture<Map<String, Integer>> processFileSupplyAsync(List<String> words) {
-		System.out.println("process words++++++++++++++supplyAsync++++++++++++++++++");
+	CompletableFuture<Object> processFileSupplyAsync(List<String> words) {
+		System.out.println("process words++++++++++++++runSupplyAsync++++++++++++++++++");
 		
-		return CompletableFuture
-				.supplyAsync(() -> words.stream().collect(Collectors.toMap(Function.identity(), v -> 1, Integer::sum)));
+		 CompletableFuture<Map<String,Integer>> cf= CompletableFuture
+				.supplyAsync(() -> words.stream().collect(Collectors.toMap(Function.identity(), v-> 1, Integer::sum)));
+		 
+		 return cf.thenApply((m)-> m.entrySet().stream().sorted(Map.Entry.comparingByValue()));//.collect(Collectors.toMap(Map.Entry::getKey,Map.Entry::getValue);
+				
+				
+		
 
 
 	}

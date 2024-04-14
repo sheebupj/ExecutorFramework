@@ -28,6 +28,8 @@ public class CallableSimpleThreadPool {
 			}
 		}
 		executorService.shutdown();
+		Thread thread= new Thread(()-> System.out.println("hello world"));
+		thread.start();
 		
 	}
 	
