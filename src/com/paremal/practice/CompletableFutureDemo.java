@@ -44,7 +44,8 @@ public class CompletableFutureDemo {
                         .collect(Collectors.groupingBy(Employee::department,
                                 Collectors.collectingAndThen(Collectors.maxBy
                                         (Comparator.comparing(Employee::salary)), Optional::get))));
-        Thread.sleep(3000);
+        Thread.sleep(1000);
+
         mapCompletableFuture.thenAccept(e-> e.entrySet().stream().forEach(System.out::println));
 
 

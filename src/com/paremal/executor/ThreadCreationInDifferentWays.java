@@ -1,20 +1,12 @@
 package com.paremal.executor;
 
 
-import org.w3c.dom.ls.LSOutput;
-
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.Time;
 import java.util.*;
-import java.util.concurrent.Callable;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -37,7 +29,7 @@ public class ThreadCreationInDifferentWays {
          * sorting usingKey
          */
         List<Future<Map<String, Integer>>> lftr = new ArrayList<>();
-        ExecutorService executor = Executors.newSingleThreadExecutor();
+        ExecutorService executor = Executors.newCachedThreadPool();
         for (String w : words1) {
             Callable<Map<String, Integer>> cl = () -> Arrays.stream(w.split(" "))
                     .collect(Collectors.toMap(Function.identity(), v -> 1, Integer::sum));
@@ -151,9 +143,9 @@ public class ThreadCreationInDifferentWays {
      */
     CompletableFuture<Map<String, Integer>> processFileSupplyAsync(List<String> words) {
         System.out.println("process words++++++++++++++runSupplyAsync++++++++++++++++++");
-
+        ExecutorService executorService= Executors.newCachedThreadPool();
         CompletableFuture<Map<String, Integer>> cf = CompletableFuture
-                .supplyAsync(() -> words.stream().collect(Collectors.toMap(Function.identity(), v -> 1, Integer::sum)));
+                .supplyAsync(() -> words.stream().collect(Collectors.toMap(Function.identity(), v -> 1, Integer::sum)),executorService);
 
         return cf.thenApply((m) -> m.entrySet().stream()
                 .sorted(Map.Entry.comparingByValue())

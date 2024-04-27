@@ -24,7 +24,7 @@ public class Section5 {
         stringFuture1.thenApply(Integer::parseInt).handle(
                 (item, throwable) -> {
                     if (throwable == null) return item;
-                    else return -1;
+                    else return throwable.getCause();
                 }).thenAccept(System.out::println);
 
         System.out.println("This message should appear first.");
