@@ -1,4 +1,4 @@
-package com.paremal.ascynccomplete;
+package com.paremal.advancemetincompletablefutre;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
