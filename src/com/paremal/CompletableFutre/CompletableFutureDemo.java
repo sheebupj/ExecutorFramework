@@ -1,4 +1,4 @@
-package com.paremal.practice;
+package com.paremal.CompletableFutre;
 
 import org.w3c.dom.ls.LSOutput;
 
