@@ -25,7 +25,7 @@ public class ThreadCreationInDifferentWays {
                 "An object of the Future used to check the status of a Callable interface and retrieves the result from Callable once the thread has done &&&&&&&&&&"};
 
         /*
-         * String processing in Excecutor framework using callable and future and Map
+         * String processing in Executor framework using callable and future and Map
          * sorting usingKey
          */
         List<Future<Map<String, Integer>>> lftr = new ArrayList<>();
@@ -101,10 +101,12 @@ public class ThreadCreationInDifferentWays {
          * CompletableFuture .supplyAsync method call
          */
         CompletableFuture<Map<String, Integer>> cfsa = creationInDifferentWays.processFileSupplyAsync(words);
-        while (!cfsa.isDone()) {
+        System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
+        cfsa.thenAccept(m-> m.entrySet().stream().forEach(System.out::println));
+       /* while (!cfsa.isDone()) {
             System.out.println("working");
             try {
-                Thread.sleep(3000);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -118,7 +120,7 @@ public class ThreadCreationInDifferentWays {
         } catch (InterruptedException | ExecutionException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }
+        }*/
 
     }
 
