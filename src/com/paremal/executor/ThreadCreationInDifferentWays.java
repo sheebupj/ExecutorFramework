@@ -9,6 +9,7 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class ThreadCreationInDifferentWays {
 
@@ -63,6 +64,15 @@ public class ThreadCreationInDifferentWays {
          */
         Runnable thread1 = () -> System.out.println("hello world2");
         Executors.newCachedThreadPool().submit(thread1);
+
+        /*
+        create even and obb numbers in different threads
+         */
+        Runnable thread01 = () -> IntStream.iterate(1, i -> i + 2).limit(10).forEach(i -> System.out.println("1# :" + i));
+        Runnable thread02 = () -> IntStream.iterate(2, i -> i + 2).limit(10).forEach(i -> System.out.println("2$ :" + i));
+        ExecutorService ex = Executors.newFixedThreadPool(2);
+        ex.submit(thread01);
+        ex.submit(thread02);
 
         Executors.newSingleThreadExecutor().submit(() -> System.out.println("Hello World 2.1"));
 
