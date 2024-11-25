@@ -86,12 +86,14 @@ public class ThreadCreationInDifferentWays {
         /*********************************************************************************************
          * Deadlock example
          */
-        String lock1="Lock1";
-        String lock2="Lock2";
-        Runnable runnable1=()->{
-            synchronized (lock1){
+        String lock1 = "Lock1";
+        String lock2 = "Lock2";
+
+
+        Runnable runnable1 = () -> {
+            synchronized (lock1) {
                 System.out.println("Thread1 Acquired Lock1");
-                synchronized (lock2){
+                synchronized (lock2) {
                     System.out.println("Thread1 Acquired Lock2");
                     try {
                         Thread.sleep(100);
@@ -103,10 +105,12 @@ public class ThreadCreationInDifferentWays {
                 System.out.println("Released lock1");
             }
         };
-        Runnable runnable2=()->{
-            synchronized (lock1){
+
+
+        Runnable runnable2 = () -> {
+            synchronized (lock1) {
                 System.out.println("Thread1 Acquired Lock1");
-                synchronized (lock2){
+                synchronized (lock2) {
                     System.out.println("Thread1 Acquired Lock2");
                     try {
                         Thread.sleep(100);
@@ -118,7 +122,9 @@ public class ThreadCreationInDifferentWays {
                 System.out.println("Released lock1");
             }
         };
+
         ExecutorService ex2 = Executors.newFixedThreadPool(2);
+
         /*following code will execute runnables in two threads(thread pool) and resulted in deadlock, so it is commented
         ex2.submit(runnable1);
         ex2.submit(runnable2);
