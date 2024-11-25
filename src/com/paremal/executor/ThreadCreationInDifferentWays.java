@@ -63,18 +63,67 @@ public class ThreadCreationInDifferentWays {
          * Thread creation using Thread class and runnable
          */
         Runnable thread1 = () -> System.out.println("hello world2");
-        Executors.newCachedThreadPool().submit(thread1);
+        // Executors.newCachedThreadPool().submit(thread1);
+
+        // Executors.newSingleThreadExecutor().submit(() -> System.out.println("Hello World 2.1"));
 
         /*
         create even and obb numbers in different threads
          */
+        System.out.println("!!!!");
         Runnable thread01 = () -> IntStream.iterate(1, i -> i + 2).limit(10).forEach(i -> System.out.println("1# :" + i));
         Runnable thread02 = () -> IntStream.iterate(2, i -> i + 2).limit(10).forEach(i -> System.out.println("2$ :" + i));
-        ExecutorService ex = Executors.newFixedThreadPool(2);
+        Runnable thread03 = () -> {
+            for (int i = 101; i < 115; i = i + 2) {
+                System.out.println("3% :" + i);
+            }
+        };
+        ExecutorService ex = Executors.newFixedThreadPool(3);
         ex.submit(thread01);
         ex.submit(thread02);
+        ex.submit(thread03);
 
-        Executors.newSingleThreadExecutor().submit(() -> System.out.println("Hello World 2.1"));
+        /*********************************************************************************************
+         * Deadlock example
+         */
+        String lock1="Lock1";
+        String lock2="Lock2";
+        Runnable runnable1=()->{
+            synchronized (lock1){
+                System.out.println("Thread1 Acquired Lock1");
+                synchronized (lock2){
+                    System.out.println("Thread1 Acquired Lock2");
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    System.out.println("Released lock2");
+                }
+                System.out.println("Released lock1");
+            }
+        };
+        Runnable runnable2=()->{
+            synchronized (lock1){
+                System.out.println("Thread1 Acquired Lock1");
+                synchronized (lock2){
+                    System.out.println("Thread1 Acquired Lock2");
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    System.out.println("Released lock2");
+                }
+                System.out.println("Released lock1");
+            }
+        };
+        ExecutorService ex2 = Executors.newFixedThreadPool(2);
+        /*following code will execute runnables in two threads(thread pool) and resulted in deadlock, so it is commented
+        ex2.submit(runnable1);
+        ex2.submit(runnable2);
+        */
+
 
         /*
          * Thread creation extending thread class
@@ -112,7 +161,7 @@ public class ThreadCreationInDifferentWays {
          */
         CompletableFuture<Map<String, Integer>> cfsa = creationInDifferentWays.processFileSupplyAsync(words);
         System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
-        cfsa.thenAccept(m-> m.entrySet().stream().forEach(System.out::println));
+        cfsa.thenAccept(m -> m.entrySet().stream().forEach(System.out::println));
        /* while (!cfsa.isDone()) {
             System.out.println("working");
             try {
@@ -155,9 +204,9 @@ public class ThreadCreationInDifferentWays {
      */
     CompletableFuture<Map<String, Integer>> processFileSupplyAsync(List<String> words) {
         System.out.println("process words++++++++++++++runSupplyAsync++++++++++++++++++");
-        ExecutorService executorService= Executors.newCachedThreadPool();
+        ExecutorService executorService = Executors.newCachedThreadPool();
         CompletableFuture<Map<String, Integer>> cf = CompletableFuture
-                .supplyAsync(() -> words.stream().collect(Collectors.toMap(Function.identity(), v -> 1, Integer::sum)),executorService);
+                .supplyAsync(() -> words.stream().collect(Collectors.toMap(Function.identity(), v -> 1, Integer::sum)), executorService);
 
         return cf.thenApply((m) -> m.entrySet().stream()
                 .sorted(Map.Entry.comparingByValue())
