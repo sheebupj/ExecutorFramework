@@ -1,4 +1,4 @@
-package com.paremal.advancemetincompletablefutre;
+package com.paremal.advanceIncompletablefutre;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;

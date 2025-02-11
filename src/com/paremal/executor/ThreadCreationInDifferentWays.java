@@ -125,10 +125,10 @@ public class ThreadCreationInDifferentWays {
 
         ExecutorService ex2 = Executors.newFixedThreadPool(2);
 
-        /*following code will execute runnables in two threads(thread pool) and resulted in deadlock, so it is commented
-        ex2.submit(runnable1);
-        ex2.submit(runnable2);
-        */
+//        following code will execute runnables in two threads(thread pool) and resulted in deadlock, so it is commented
+//        ex2.submit(runnable1);
+//        ex2.submit(runnable2);
+
 
 
         /*

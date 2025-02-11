@@ -1,4 +1,4 @@
-package com.paremal.advancemetincompletablefutre;
+package com.paremal.advanceIncompletablefutre;
 import java.util.concurrent.*;
 public class DelayedExecutor {
         public static void main(String[] args)
