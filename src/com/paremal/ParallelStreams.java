@@ -2,6 +2,7 @@ package com.paremal;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -46,6 +47,17 @@ public class ParallelStreams {
                 .reduce("",
                         (s1, c) -> s1 + c,
                         (s2, s3) -> s2 + s3));
+        Stream<String> stream = Stream.of("s","h", "e", "e", "b","u", "p", "a", "r","e", "m", "a", "l","j","a","y","a","d","e","v","a","n").parallel();
+        SortedSet<String> set = stream.collect(ConcurrentSkipListSet::new,
+                Set::add,
+                Set::addAll);
+        System.out.println("###"+set);
+
+        Stream<String> stream1 = Stream.of("s","h", "e", "e", "b","u", "p", "a", "r","e", "m", "a", "l","j","a","y","a","d","e","v","a","n");
+        SortedSet<String> set1 = stream1.collect(TreeSet::new,
+                Set::add,
+                Set::addAll);
+        System.out.println("###1"+set1);
 
         Stream<String> ohMy = Stream.of("lions", "tigers", "bears").parallel();
         ConcurrentMap<Integer, String> map = ohMy
