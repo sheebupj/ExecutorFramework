@@ -38,18 +38,19 @@ public class ProducerConsumerRunner {
  class ProducerConsumer {
     LinkedList<Integer> llist = new LinkedList<>();
     int capacity = 2;
+    int sleepTime=1000;
 
 
     public void produce() throws InterruptedException {
         int value = 0;
         while (true) {
             synchronized (this) {
-                while (llist.size() == 2)
+                while (llist.size() == capacity)
                     wait();
-                System.out.println("produced" + value);
-                llist.add(value++);
+                System.out.println("produced(+) : " + value);
+                llist.add(++value);
                 notify();
-                Thread.sleep(1000);
+                Thread.sleep(sleepTime);
             }
         }
 
@@ -58,13 +59,13 @@ public class ProducerConsumerRunner {
     public void consume() throws InterruptedException {
         while (true) {
             synchronized (this) {
-                while (llist.size() == 0) {
+                while (llist.isEmpty()) {
                     wait();
                 }
                 int val = llist.removeFirst();
-                System.out.println("Consumed" + val);
+                System.out.println("Consumed(-) : " + val);
                 notify();
-                Thread.sleep(1000);
+                Thread.sleep(sleepTime);
 
             }
         }
